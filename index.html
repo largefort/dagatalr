@@ -1,0 +1,68 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Dagatalr - Viking Norse Calendar</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Noto+Sans:wght@300;400;500;600&family=Noto+Sans+Runic&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#d4af37">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dagatalr">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="runes-border"></div>
+            <h1 class="title">DAGATALR</h1>
+            <p class="subtitle">Vikinga Tímatal • ᚠᚢᚦᚨᚱᚲ</p>
+            <div class="runes-border"></div>
+        </header>
+
+        <main class="main">
+            <div class="calendar-controls">
+                <button class="control-btn" id="prevMonth">◀</button>
+                <div class="month-year-display">
+                    <h2 id="monthYear"></h2>
+                </div>
+                <button class="control-btn" id="nextMonth">▶</button>
+            </div>
+
+            <div class="calendar-grid">
+                <div class="days-container" id="daysContainer"></div>
+            </div>
+
+            <div class="current-date-display">
+                <div class="rune-divider"></div>
+                <div class="current-date">
+                    <span class="current-label">Í dag:</span>
+                    <span id="currentVikingDate"></span>
+                </div>
+                <div class="moon-phase">
+                    <span class="moon-icon" id="moonPhase">🌙</span>
+                    <span id="moonPhaseName"></span>
+                </div>
+                <div class="notification-controls">
+                    <button class="notification-btn" id="notificationToggle">
+                        <span id="notificationIcon">🔔</span>
+                        <span id="notificationText">Virkja tilkynningar</span>
+                    </button>
+                </div>
+                <div class="rune-divider"></div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="runes-text">ᚱᚢᚾᛁᚱ ᛟᚠ ᛏᚺᛖ ᚾᛟᚱᚦ ᛫ ᛞᚨᚷᚨᛏᚨᛚᚱ</div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

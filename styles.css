@@ -1,0 +1,904 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Runic&display=swap');
+
+/* Add fallback fonts for Elder Futhark runes */
+@font-face {
+  font-family: 'Elder Futhark';
+  src: local('Noto Sans Runic'),
+       local('DejaVu Sans'),
+       local('Liberation Sans'),
+       local('FreeSans'),
+       local('Arial Unicode MS'),
+       local('Lucida Sans Unicode'),
+       local('Code2000'),
+       local('Symbola'),
+       local('Unifont');
+  font-display: swap;
+  unicode-range: U+16A0-16FF; /* Runic Unicode range */
+}
+
+body {
+    font-family: 'Noto Sans', 'DejaVu Sans', 'Liberation Sans', 'FreeSans', sans-serif;
+    background: #0a0a0a;
+    color: #d4af37;
+    min-height: 100vh;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+        linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    /* Android-specific optimizations */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-overflow-scrolling: touch;
+    /* Prevent zoom on input focus */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    /* Force hardware acceleration */
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* Android scroll optimization */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    background: rgba(20, 20, 20, 0.9);
+    padding: 30px 20px;
+    border-radius: 20px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    box-shadow: 
+        0 0 30px rgba(212, 175, 55, 0.2),
+        inset 0 0 30px rgba(139, 69, 19, 0.1);
+    /* Android performance optimization */
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #d4af37, #8b4513, #cd853f, #d4af37);
+    border-radius: 20px;
+    padding: 3px;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    z-index: -1;
+}
+
+.runes-border {
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #d4af37, #8b4513, #d4af37, transparent);
+    margin: 25px 0;
+    position: relative;
+    border-radius: 2px;
+}
+
+.runes-border::before {
+    content: '᛫ ᚱᚢᚾᛁᚱ ᛫ ᛟᚠ ᛫ ᛏᚺᛖ ᛫ ᚾᛟᚱᚦ ᛫';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20, 20, 20, 0.95);
+    padding: 5px 25px;
+    font-size: 16px;
+    color: #d4af37;
+    border-radius: 15px;
+    border: 2px solid #8b4513;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    font-family: 'Elder Futhark', 'Noto Sans Runic', 'DejaVu Sans', 'Liberation Sans', 'FreeSans', 'Arial Unicode MS', 'Lucida Sans Unicode', 'Code2000', 'Symbola', 'Unifont', monospace;
+}
+
+.title {
+    font-family: 'Cinzel', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #d4af37, #ffd700, #d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    letter-spacing: 8px;
+    margin: 25px 0;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    color: #cd853f;
+    font-style: italic;
+    letter-spacing: 3px;
+    font-weight: 300;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    font-family: 'Elder Futhark', 'Noto Sans Runic', 'DejaVu Sans', 'Liberation Sans', 'FreeSans', 'Arial Unicode MS', 'Lucida Sans Unicode', 'Code2000', 'Symbola', 'Unifont', serif;
+}
+
+.main {
+    background: rgba(15, 15, 15, 0.95);
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(212, 175, 55, 0.1),
+        inset 0 0 30px rgba(139, 69, 19, 0.05);
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    flex: 1;
+    position: relative;
+}
+
+.main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #d4af37, #8b4513, #cd853f, #d4af37);
+    border-radius: 25px;
+    padding: 3px;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    z-index: -1;
+}
+
+.calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding: 0 10px;
+}
+
+.control-btn {
+    background: linear-gradient(145deg, #d4af37, #b8860b, #8b4513);
+    border: none;
+    color: #0a0a0a;
+    font-size: 1.8rem;
+    font-weight: bold;
+    padding: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 8px 16px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(212, 175, 55, 0.3);
+    min-width: 70px;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #8b4513;
+    position: relative;
+    overflow: hidden;
+    /* Android touch optimization */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    /* Improve button responsiveness on Android */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Hardware acceleration */
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.control-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.control-btn:hover::before {
+    left: 100%;
+}
+
+.control-btn:hover, .control-btn:active {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+        0 12px 24px rgba(0, 0, 0, 0.6),
+        0 0 30px rgba(212, 175, 55, 0.5);
+}
+
+.control-btn:active {
+    transform: translateY(-1px) scale(1.02);
+}
+
+.month-year-display {
+    text-align: center;
+    flex: 1;
+    margin: 0 20px;
+}
+
+.month-year-display h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 3rem;
+    background: linear-gradient(45deg, #d4af37, #ffd700, #d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+}
+
+.calendar-grid {
+    margin-bottom: 40px;
+}
+
+.days-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+}
+
+.day-cell {
+    background: rgba(25, 25, 25, 0.8);
+    border: 2px solid #444;
+    padding: 15px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    touch-action: manipulation;
+    position: relative;
+    overflow: hidden;
+    /* Android touch optimization */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* Hardware acceleration for smooth animations */
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    /* Prevent text selection on long press */
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    -ms-user-drag: none;
+    user-drag: none;
+}
+
+.day-cell::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.day-cell:hover::before, .day-cell:active::before {
+    opacity: 1;
+}
+
+.day-cell:hover, .day-cell:active {
+    background: rgba(212, 175, 55, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 16px rgba(212, 175, 55, 0.2),
+        0 0 20px rgba(212, 175, 55, 0.3);
+    border-color: #d4af37;
+}
+
+.day-cell:active {
+    transform: translateY(0);
+}
+
+.day-cell.today {
+    background: linear-gradient(145deg, #d4af37, #b8860b, #8b4513);
+    color: #0a0a0a;
+    font-weight: bold;
+    box-shadow: 
+        0 8px 20px rgba(212, 175, 55, 0.4),
+        0 0 30px rgba(212, 175, 55, 0.6);
+    border-color: #ffd700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.day-cell.other-month {
+    opacity: 0.3;
+    color: #666;
+}
+
+.day-number {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.viking-day {
+    font-size: 0.85rem;
+    color: #cd853f;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.current-date-display {
+    text-align: center;
+    margin-top: 40px;
+    background: rgba(20, 20, 20, 0.7);
+    padding: 30px;
+    border-radius: 20px;
+    border: 2px solid #8b4513;
+    box-shadow: 
+        0 10px 20px rgba(0, 0, 0, 0.6),
+        inset 0 0 20px rgba(139, 69, 19, 0.1);
+}
+
+.rune-divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #d4af37, #8b4513, #d4af37, transparent);
+    margin: 25px 0;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.current-date {
+    font-size: 1.6rem;
+    margin: 25px 0;
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.current-label {
+    color: #cd853f;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.moon-phase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    font-size: 1.3rem;
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(139, 69, 19, 0.1);
+    border-radius: 15px;
+    border: 1px solid #8b4513;
+}
+
+.moon-icon {
+    font-size: 2rem;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+}
+
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 25px;
+    background: rgba(15, 15, 15, 0.8);
+    border-radius: 15px;
+    border: 2px solid #8b4513;
+}
+
+.runes-text {
+    font-size: 1.2rem;
+    color: #8b4513;
+    letter-spacing: 4px;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    font-family: 'Elder Futhark', 'Noto Sans Runic', 'DejaVu Sans', 'Liberation Sans', 'FreeSans', 'Arial Unicode MS', 'Lucida Sans Unicode', 'Code2000', 'Symbola', 'Unifont', monospace;
+}
+
+.notification-controls {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notification-btn {
+    background: linear-gradient(145deg, #d4af37, #b8860b, #8b4513);
+    border: none;
+    color: #0a0a0a;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 15px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 8px 16px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(212, 175, 55, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid #8b4513;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Cinzel', serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.notification-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.notification-btn:hover::before {
+    left: 100%;
+}
+
+.notification-btn:hover, .notification-btn:active {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 
+        0 12px 24px rgba(0, 0, 0, 0.6),
+        0 0 30px rgba(212, 175, 55, 0.5);
+}
+
+.notification-btn:active {
+    transform: translateY(0) scale(1.02);
+}
+
+.notification-btn.disabled {
+    background: linear-gradient(145deg, #666, #444);
+    color: #999;
+    cursor: not-allowed;
+}
+
+.notification-btn.disabled:hover {
+    transform: none;
+    box-shadow: 
+        0 8px 16px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+#notificationIcon {
+    font-size: 1.3rem;
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+}
+
+/* Android-specific optimizations */
+@media screen and (-webkit-min-device-pixel-ratio: 1.5) {
+    .title {
+        text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    }
+    
+    .month-year-display h2 {
+        text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    }
+}
+
+/* Android Chrome specific */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .control-btn {
+        -webkit-appearance: none;
+        border-radius: 50%;
+    }
+    
+    .day-cell {
+        -webkit-appearance: none;
+        border-radius: 12px;
+    }
+}
+
+/* Mobile-first responsive design with Android optimizations */
+@media (max-width: 480px) {
+    .container {
+        padding: 5px;
+    }
+    
+    .title {
+        font-size: 2rem;
+        margin: 10px 0;
+        letter-spacing: 2px;
+        /* Android text rendering optimization */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+        /* Prevent text scaling on Android */
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+    }
+    
+    .main {
+        padding: 15px;
+        border-radius: 10px;
+        /* Android scroll optimization */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    .calendar-controls {
+        margin-bottom: 20px;
+        /* Prevent horizontal scrolling on Android */
+        overflow-x: hidden;
+    }
+    
+    .control-btn {
+        padding: 15px 20px;
+        font-size: 1.2rem;
+        min-width: 50px;
+        min-height: 50px;
+        /* Larger touch targets for Android */
+        min-width: 48px;
+        min-height: 48px;
+    }
+    
+    .month-year-display h2 {
+        font-size: 1.5rem;
+        /* Android text rendering */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .day-cell {
+        padding: 10px 2px;
+        min-height: 55px;
+        /* Android minimum touch target */
+        min-height: 48px;
+    }
+    
+    .day-number {
+        font-size: 1rem;
+        /* Android text optimization */
+        -webkit-font-smoothing: antialiased;
+    }
+    
+    .viking-day {
+        font-size: 0.6rem;
+        /* Android text optimization */
+        -webkit-font-smoothing: antialiased;
+    }
+    
+    .current-date {
+        font-size: 1.2rem;
+        /* Android text rendering */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .moon-phase {
+        font-size: 1rem;
+        /* Android flexbox optimization */
+        -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+    
+    .moon-icon {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.5rem;
+        /* Android text rendering */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .month-year-display h2 {
+        font-size: 2rem;
+        /* Android text rendering */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .day-cell {
+        padding: 15px 4px;
+        min-height: 60px;
+        /* Android minimum touch target */
+        min-height: 48px;
+    }
+    
+    .day-number {
+        font-size: 1.1rem;
+        /* Android text optimization */
+        -webkit-font-smoothing: antialiased;
+    }
+    
+    .viking-day {
+        font-size: 0.7rem;
+        /* Android text optimization */
+        -webkit-font-smoothing: antialiased;
+    }
+}
+
+/* Landscape orientation for mobile with Android optimizations */
+@media (max-width: 926px) and (orientation: landscape) {
+    .container {
+        padding: 5px;
+        /* Android landscape optimization */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    .header {
+        margin-bottom: 20px;
+        /* Android performance */
+        will-change: transform;
+    }
+    
+    .title {
+        font-size: 2rem;
+        margin: 10px 0;
+        /* Android text rendering */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .main {
+        padding: 15px;
+        /* Android scroll optimization */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    .calendar-controls {
+        margin-bottom: 15px;
+        /* Prevent horizontal scrolling */
+        overflow-x: hidden;
+    }
+    
+    .day-cell {
+        min-height: 45px;
+        padding: 8px 2px;
+        /* Android minimum touch target */
+        min-height: 48px;
+    }
+    
+    .day-number {
+        font-size: 0.9rem;
+        /* Android text optimization */
+        -webkit-font-smoothing: antialiased;
+    }
+    
+    .viking-day {
+        font-size: 0.6rem;
+        /* Android text optimization */
+        -webkit-font-smoothing: antialiased;
+    }
+}
+
+/* Android-specific device optimizations */
+@media screen and (device-width: 360px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 3) {
+    /* Galaxy S5, S6, S7 */
+    .day-cell {
+        min-height: 50px;
+        padding: 12px 4px;
+    }
+    
+    .control-btn {
+        min-width: 55px;
+        min-height: 55px;
+    }
+}
+
+@media screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) {
+    /* Galaxy S8, S9, S10 */
+    .day-cell {
+        min-height: 55px;
+        padding: 15px 6px;
+    }
+    
+    .control-btn {
+        min-width: 60px;
+        min-height: 60px;
+    }
+}
+
+/* High DPI displays with Android optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .title {
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        /* Android high DPI optimization */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .month-year-display h2 {
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        /* Android high DPI optimization */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* Android Chrome browser specific fixes */
+@supports (-webkit-appearance: none) {
+    .control-btn {
+        -webkit-appearance: none;
+        -webkit-tap-highlight-color: rgba(212, 175, 55, 0.2);
+    }
+    
+    .day-cell {
+        -webkit-appearance: none;
+        -webkit-tap-highlight-color: rgba(212, 175, 55, 0.1);
+    }
+}
+
+/* Android WebView optimizations */
+@media screen and (max-device-width: 480px) {
+    body {
+        /* Prevent text scaling in WebView */
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        /* Optimize scrolling */
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .container {
+        /* WebView scroll optimization */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+}
+
+/* Android keyboard appearance fixes */
+@media screen and (max-height: 500px) {
+    .container {
+        min-height: auto;
+        padding: 10px 5px;
+    }
+    
+    .header {
+        margin-bottom: 15px;
+        padding: 20px 15px;
+    }
+    
+    .main {
+        padding: 15px;
+    }
+}
+
+/* Android dark mode support */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #0a0a0a;
+        color: #d4af37;
+    }
+}
+
+/* Android motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Android touch device optimizations */
+@media (pointer: coarse) {
+    .control-btn {
+        min-width: 48px;
+        min-height: 48px;
+        padding: 18px;
+    }
+    
+    .day-cell {
+        min-height: 48px;
+        padding: 12px 8px;
+    }
+    
+    .day-cell:hover {
+        /* Remove hover effects on touch devices */
+        background: rgba(25, 25, 25, 0.8);
+        transform: none;
+        box-shadow: none;
+        border-color: #444;
+    }
+}
+
+/* Android performance optimizations */
+.main, .header, .footer {
+    /* Enable hardware acceleration */
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+    /* Optimize repaints */
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* Add Linux-specific font optimizations */
+@media screen and (-webkit-min-device-pixel-ratio: 1) {
+    .runes-border::before,
+    .subtitle,
+    .runes-text {
+        text-rendering: geometricPrecision;
+        -webkit-font-feature-settings: "kern" 1;
+        -moz-font-feature-settings: "kern" 1;
+        -o-font-feature-settings: "kern" 1;
+        font-feature-settings: "kern" 1;
+    }
+}
+
+/* Linux font hinting optimization */
+@media screen and (min-resolution: 96dpi) {
+    .runes-border::before,
+    .subtitle,
+    .runes-text {
+        -webkit-font-smoothing: subpixel-antialiased;
+        -moz-osx-font-smoothing: auto;
+    }
+}
