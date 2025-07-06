@@ -6,22 +6,22 @@ class VikingCalendar {
         
         // Viking months (Old Norse)
         this.vikingMonths = [
-            'Jólmánuður', 'Þorri', 'Gói', 'Einmánuður', 
-            'Harpa', 'Skerpla', 'Sólmánuður', 'Heyannir',
-            'Tvímánuður', 'Haustmánuður', 'Gormánuður', 'Ýlir'
+            'Jólmánuðr', 'Þorri', 'Góa', 'Einmánuðr', 
+            'Harpa', 'Skerpla', 'Sólmánuðr', 'Heyannir',
+            'Tvímánuðr', 'Haustmánuðr', 'Gormánuðr', 'Ýlir'
         ];
         
-        // Viking days of the week
+        // Viking days of the week (Old Norse)
         this.vikingDays = [
             'Sunnudagr', 'Mánadagr', 'Týsdagr', 'Óðinsdagr',
             'Þórsdagr', 'Frjádagr', 'Laugardagr'
         ];
         
-        // Moon phases
+        // Moon phases (Old Norse)
         this.moonPhases = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
         this.moonNames = [
-            'Nýmáni', 'Vaxandi', 'Hálfmáni', 'Vaxandi gibbous',
-            'Fullmáni', 'Minnkandi gibbous', 'Minnkandi hálfmáni', 'Síðasti fjórðungur'
+            'Nýmáni', 'Vaxandi máni', 'Hálfmáni', 'Vaxandi túnglfull',
+            'Fullmáni', 'Minnkandi túnglfull', 'Minnkandi hálfmáni', 'Gamall máni'
         ];
         
         // Notification state
@@ -181,7 +181,7 @@ class VikingCalendar {
     }
     
     getVikingDayName(date) {
-        const dayNames = ['Sun', 'Mán', 'Týs', 'Óðins', 'Þórs', 'Frjá', 'Laugar'];
+        const dayNames = ['Sun', 'Mán', 'Týs', 'Óðin', 'Þór', 'Frjá', 'Laug'];
         return dayNames[date.getDay()];
     }
     
@@ -242,7 +242,7 @@ class VikingCalendar {
     
     async toggleNotifications() {
         if (!('Notification' in window)) {
-            alert('Din vafri styður ekki tilkynningar');
+            alert('Þinn vafri styður eigi tilkynningar');
             return;
         }
         
@@ -260,7 +260,7 @@ class VikingCalendar {
                 this.scheduleDailyNotification();
                 this.showWelcomeNotification();
             } else {
-                alert('Tilkynningar voru hafnaðar. Þú getur virkjað þær í stillingum vafrans.');
+                alert('Tilkynningar váru hafnaðar. Þú getur virkjað þær í stillingum vafrans.');
             }
         }
     }
@@ -276,7 +276,7 @@ class VikingCalendar {
             button.classList.remove('disabled');
         } else {
             icon.textContent = '🔕';
-            text.textContent = 'Virkja tilkynningar';
+            text.textContent = 'Vekja tilkynningar';
             button.classList.add('disabled');
         }
     }
@@ -287,7 +287,7 @@ class VikingCalendar {
         const text = document.getElementById('notificationText');
         
         icon.textContent = '🚫';
-        text.textContent = 'Tilkynningar ekki studdar';
+        text.textContent = 'Tilkynningar eigi studdar';
         button.classList.add('disabled');
         button.disabled = true;
     }
@@ -297,7 +297,7 @@ class VikingCalendar {
         const vikingDate = this.formatVikingDate(now);
         
         new Notification('Dagatalr - Tilkynningar virkjaðar', {
-            body: `Góðan dag! Í dag er ${vikingDate}`,
+            body: `Góðan dag! Í þessum degi er ${vikingDate}`,
             icon: '/icon-192.png',
             badge: '/icon-192.png',
             tag: 'welcome',
@@ -339,8 +339,8 @@ class VikingCalendar {
         const moonPhase = this.calculateMoonPhase(now);
         const moonName = this.moonNames[moonPhase];
         
-        new Notification('Dagatalr - Daglegt upprifjun', {
-            body: `${vikingDayName} - ${vikingDate}\n🌙 ${moonName}`,
+        new Notification('Dagatalr - Dagligt upprifjun', {
+            body: `${vikingDayName}dagr - ${vikingDate}\n🌙 ${moonName}`,
             icon: '/icon-192.png',
             badge: '/icon-192.png',
             tag: 'daily-reminder',

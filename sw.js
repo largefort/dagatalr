@@ -58,21 +58,21 @@ self.addEventListener('sync', event => {
 function sendDailyNotification() {
   const now = new Date();
   const vikingMonths = [
-    'Jólmánuður', 'Þorri', 'Gói', 'Einmánuður', 
-    'Harpa', 'Skerpla', 'Sólmánuður', 'Heyannir',
-    'Tvímánuður', 'Haustmánuður', 'Gormánuður', 'Ýlir'
+    'Jólmánuðr', 'Þorri', 'Góa', 'Einmánuðr', 
+    'Harpa', 'Skerpla', 'Sólmánuðr', 'Heyannir',
+    'Tvímánuðr', 'Haustmánuðr', 'Gormánuðr', 'Ýlir'
   ];
   
-  const vikingDays = ['Sun', 'Mán', 'Týs', 'Óðins', 'Þórs', 'Frjá', 'Laugar'];
+  const vikingDays = ['Sun', 'Mán', 'Týs', 'Óðin', 'Þór', 'Frjá', 'Laug'];
   
   const vikingYear = 793 + Math.abs((now.getFullYear() - 2000) % 273);
   const vikingMonth = vikingMonths[now.getMonth()];
   const vikingDayName = vikingDays[now.getDay()];
   
-  const vikingDate = `${vikingDayName}, ${now.getDate()}. ${vikingMonth} ${vikingYear}`;
+  const vikingDate = `${vikingDayName}dagr, ${now.getDate()}. ${vikingMonth} ${vikingYear}`;
   
-  return self.registration.showNotification('Dagatalr - Daglegt upprifjun', {
-    body: `Í dag er ${vikingDate}`,
+  return self.registration.showNotification('Dagatalr - Dagligt upprifjun', {
+    body: `Í þessum degi er ${vikingDate}`,
     icon: '/icon-192.png',
     badge: '/icon-192.png',
     tag: 'daily-reminder',
