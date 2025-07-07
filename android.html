@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Dagatalr - Viking Norse Calendar | Android</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Noto+Sans:wght@300;400;500;600&family=Noto+Sans+Runic&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#d4af37">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dagatalr">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#d4af37">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Runic&display=swap');
+
+        @font-face {
+            font-family: 'Elder Futhark';
+            src: local('Noto Sans Runic'),
+                 local('DejaVu Sans'),
+                 local('Liberation Sans'),
+                 local('FreeSans'),
+                 local('Arial Unicode MS'),
+                 local('Lucida Sans Unicode'),
+                 local('Code2000'),
+                 local('Symbola'),
+                 local('Unifont');
+            font-display: swap;
+            unicode-range: U+16A0-16FF;
+        }
+
+        html {
+            height: 100%;
+            height: 100vh;
+            height: -webkit-fill-available;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Noto Sans', 'DejaVu Sans', 'Liberation Sans', 'FreeSans', sans-serif;
+            background: #0a0a0a;
+            color: #d4af37;
+            height: 100%;
+            height: 100vh;
+            height: -webkit-fill-available;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+            background-attachment: fixed;
+            overflow: hidden;
+            touch-action: manipulation;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            position: fixed;
+            width: 100%;
+        }
+
+        .container {
+            height: 100%;
+            height: 100vh;
+            height: -webkit-fill-available;
+            padding: env(safe-area-inset-top, 10px) env(safe-area-inset-right, 10px) env(safe-area-inset-bottom, 10px) env(safe-area-inset-left, 10px);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            position: relative;
+            will-change: scroll-position;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+            position: relative;
+            background: rgba(20, 20, 20, 0.95);
+            padding: 20px 15px;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            box-shadow: 
+                0 0 25px rgba(212, 175, 55, 0.2),
+                inset 0 0 20px rgba(139, 69, 19, 0.1);
+            will-change: transform;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            flex-shrink: 0;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #d4af37, #8b4513, #cd853f, #d4af37);
+            border-radius: 20px;
+            padding: 2px;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            -webkit-mask-composite: xor;
+            z-index: -1;
+        }
+
+        .runes-border {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, #8b4513, #d4af37, transparent);
+            margin: 15px 0;
+            position: relative;
+            border-radius: 2px;
+        }
+
+        .runes-border::before {
+            content: '᛫ ᚱᚢᚾᛁᚱ ᛫ ᛟᚠ ᛫ ᛏᚺᛖ ᛫ ᚾᛟᚱᚦ ᛫';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 20, 20, 0.95);
+            padding: 4px 20px;
+            font-size: 12px;
+            color: #d4af37;
+            border-radius: 12px;
+            border: 1px solid #8b4513;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            font-family: 'Elder Futhark', 'Noto Sans Runic', monospace;
+            white-space: nowrap;
+        }
+
+        .title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #d4af37, #ffd700, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            letter-spacing: 4px;
+            margin: 15px 0;
+            filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.8));
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #cd853f;
+            font-style: italic;
+            letter-spacing: 2px;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+            font-family: 'Elder Futhark', 'Noto Sans Runic', serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .main {
+            background: rgba(15, 15, 15, 0.95);
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.8),
+                0 0 30px rgba(212, 175, 55, 0.1),
+                inset 0 0 20px rgba(139, 69, 19, 0.05);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #d4af37, #8b4513, #cd853f, #d4af37);
+            border-radius: 20px;
+            padding: 2px;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            -webkit-mask-composite: xor;
+            z-index: -1;
+        }
+
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 5px;
+            flex-shrink: 0;
+        }
+
+        .control-btn {
+            background: linear-gradient(145deg, #d4af37, #b8860b, #8b4513);
+            border: none;
+            color: #0a0a0a;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 
+                0 6px 12px rgba(0, 0, 0, 0.5),
+                0 0 15px rgba(212, 175, 55, 0.3);
+            min-width: 50px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #8b4513;
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            -webkit-appearance: none;
+            will-change: transform;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+            box-shadow: 
+                0 3px 6px rgba(0, 0, 0, 0.6),
+                0 0 10px rgba(212, 175, 55, 0.4);
+        }
+
+        .month-year-display {
+            text-align: center;
+            flex: 1;
+            margin: 0 15px;
+        }
+
+        .month-year-display h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            background: linear-gradient(45deg, #d4af37, #ffd700, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.8));
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .calendar-grid {
+            flex: 1;
+            min-height: 0;
+            margin-bottom: 15px;
+        }
+
+        .days-container {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            height: 100%;
+        }
+
+        .day-cell {
+            background: rgba(25, 25, 25, 0.8);
+            border: 1px solid #444;
+            padding: 8px 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 8px;
+            min-height: 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            touch-action: manipulation;
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: rgba(212, 175, 55, 0.2);
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            will-change: transform;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        .day-cell:active {
+            background: rgba(212, 175, 55, 0.2);
+            transform: scale(0.95);
+            border-color: #d4af37;
+        }
+
+        .day-cell.today {
+            background: linear-gradient(145deg, #d4af37, #b8860b, #8b4513);
+            color: #0a0a0a;
+            font-weight: bold;
+            box-shadow: 
+                0 4px 8px rgba(212, 175, 55, 0.4),
+                0 0 15px rgba(212, 175, 55, 0.6);
+            border-color: #ffd700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .day-cell.other-month {
+            opacity: 0.3;
+            color: #666;
+        }
+
+        .day-number {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .viking-day {
+            font-size: 0.6rem;
+            color: #cd853f;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .current-date-display {
+            text-align: center;
+            background: rgba(20, 20, 20, 0.7);
+            padding: 20px 15px;
+            border-radius: 15px;
+            border: 1px solid #8b4513;
+            box-shadow: 
+                0 8px 16px rgba(0, 0, 0, 0.6),
+                inset 0 0 15px rgba(139, 69, 19, 0.1);
+            flex-shrink: 0;
+        }
+
+        .rune-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, #8b4513, #d4af37, transparent);
+            margin: 15px 0;
+            border-radius: 2px;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+        }
+
+        .current-date {
+            font-size: 1.1rem;
+            margin: 15px 0;
+            font-family: 'Cinzel', serif;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .current-label {
+            color: #cd853f;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .moon-phase {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1rem;
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(139, 69, 19, 0.1);
+            border-radius: 12px;
+            border: 1px solid #8b4513;
+            flex-wrap: wrap;
+        }
+
+        .moon-icon {
+            font-size: 1.5rem;
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+        }
+
+        .notification-controls {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .notification-btn {
+            background: linear-gradient(145deg, #d4af37, #b8860b, #8b4513);
+            border: none;
+            color: #0a0a0a;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 
+                0 6px 12px rgba(0, 0, 0, 0.5),
+                0 0 15px rgba(212, 175, 55, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #8b4513;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Cinzel', serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            -webkit-appearance: none;
+            will-change: transform;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        .notification-btn:active {
+            transform: scale(0.95);
+            box-shadow: 
+                0 3px 6px rgba(0, 0, 0, 0.6),
+                0 0 10px rgba(212, 175, 55, 0.4);
+        }
+
+        .notification-btn.disabled {
+            background: linear-gradient(145deg, #666, #444);
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .notification-btn.disabled:active {
+            transform: none;
+        }
+
+        #notificationIcon {
+            font-size: 1rem;
+            filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(15, 15, 15, 0.8);
+            border-radius: 12px;
+            border: 1px solid #8b4513;
+            flex-shrink: 0;
+        }
+
+        .runes-text {
+            font-size: 0.9rem;
+            color: #8b4513;
+            letter-spacing: 3px;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            font-family: 'Elder Futhark', 'Noto Sans Runic', monospace;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Vibration feedback for Android */
+        @media (max-width: 480px) {
+            .control-btn:active,
+            .day-cell:active,
+            .notification-btn:active {
+                animation: vibrate 0.1s;
+            }
+        }
+
+        @keyframes vibrate {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-1px); }
+            75% { transform: translateX(1px); }
+        }
+
+        /* Android keyboard optimizations */
+        @media screen and (max-height: 500px) {
+            .header {
+                margin-bottom: 10px;
+                padding: 15px 10px;
+            }
+            
+            .title {
+                font-size: 1.8rem;
+                margin: 10px 0;
+            }
+            
+            .main {
+                padding: 10px;
+            }
+            
+            .calendar-controls {
+                margin-bottom: 15px;
+            }
+            
+            .day-cell {
+                min-height: 35px;
+                padding: 6px 3px;
+            }
+            
+            .day-number {
+                font-size: 0.9rem;
+            }
+            
+            .viking-day {
+                font-size: 0.5rem;
+            }
+        }
+
+        /* Android Chrome specific optimizations */
+        @supports (-webkit-appearance: none) {
+            .control-btn,
+            .day-cell,
+            .notification-btn {
+                -webkit-appearance: none;
+            }
+        }
+
+        /* Landscape orientation for Android */
+        @media (orientation: landscape) and (max-height: 600px) {
+            .container {
+                flex-direction: row;
+                align-items: stretch;
+            }
+            
+            .header {
+                width: 30%;
+                margin-right: 15px;
+                margin-bottom: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            
+            .main {
+                width: 45%;
+                margin-right: 15px;
+            }
+            
+            .footer,
+            .current-date-display {
+                width: 25%;
+            }
+            
+            .title {
+                font-size: 1.5rem;
+            }
+            
+            .month-year-display h2 {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Android motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Android performance optimizations */
+        .main,
+        .header,
+        .footer,
+        .current-date-display {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            will-change: transform;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        /* Android dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #0a0a0a;
+                color: #d4af37;
+            }
+        }
+
+        /* Android safe area support */
+        @supports (padding: max(0px)) {
+            .container {
+                padding-top: max(env(safe-area-inset-top), 10px);
+                padding-bottom: max(env(safe-area-inset-bottom), 10px);
+                padding-left: max(env(safe-area-inset-left), 10px);
+                padding-right: max(env(safe-area-inset-right), 10px);
+            }
+        }
+
+        /* High refresh rate Android devices */
+        @media (min-resolution: 120dpi) {
+            .control-btn,
+            .day-cell,
+            .notification-btn {
+                transition-duration: 0.1s;
+            }
+        }
+
+        /* Foldable screen support */
+        @media (spanning: single-fold-vertical) {
+            .container {
+                flex-direction: row;
+            }
+            
+            .main {
+                width: 60%;
+            }
+            
+            .header {
+                width: 40%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="runes-border"></div>
+            <h1 class="title">DAGATALR</h1>
+            <p class="subtitle">Víkinga Tímatal • ᚠᚢᚦᚨᚱᚲ</p>
+            <div class="runes-border"></div>
+        </header>
+
+        <main class="main">
+            <div class="calendar-controls">
+                <button class="control-btn" id="prevMonth">◀</button>
+                <div class="month-year-display">
+                    <h2 id="monthYear"></h2>
+                </div>
+                <button class="control-btn" id="nextMonth">▶</button>
+            </div>
+
+            <div class="calendar-grid">
+                <div class="days-container" id="daysContainer"></div>
+            </div>
+        </main>
+
+        <div class="current-date-display">
+            <div class="rune-divider"></div>
+            <div class="current-date">
+                <span class="current-label">Í þessum degi:</span>
+                <span id="currentVikingDate"></span>
+            </div>
+            <div class="moon-phase">
+                <span class="moon-icon" id="moonPhase">🌙</span>
+                <span id="moonPhaseName"></span>
+            </div>
+            <div class="notification-controls">
+                <button class="notification-btn" id="notificationToggle">
+                    <span id="notificationIcon">🔔</span>
+                    <span id="notificationText">Vekja tilkynningar</span>
+                </button>
+            </div>
+            <div class="rune-divider"></div>
+        </div>
+
+        <footer class="footer">
+            <div class="runes-text">ᚱᚢᚾᛁᚱ ᛟᚠ ᛏᚺᛖ ᚾᛟᚱᚦ ᛫ ᛞᚨᚷᚨᛏᚨᛚᚱ</div>
+        </footer>
+    </div>
+
+    <script>
+        class VikingCalendar {
+            constructor() {
+                this.currentDate = new Date();
+                this.displayMonth = this.currentDate.getMonth();
+                this.displayYear = this.currentDate.getFullYear();
+                
+                this.vikingMonths = [
+                    'Jólmánuðr', 'Þorri', 'Góa', 'Einmánuðr', 
+                    'Harpa', 'Skerpla', 'Sólmánuðr', 'Heyannir',
+                    'Tvímánuðr', 'Haustmánuðr', 'Gormánuðr', 'Ýlir'
+                ];
+                
+                this.vikingDays = [
+                    'Sunnudagr', 'Mánadagr', 'Týsdagr', 'Óðinsdagr',
+                    'Þórsdagr', 'Frjádagr', 'Laugardagr'
+                ];
+                
+                this.moonPhases = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
+                this.moonNames = [
+                    'Nýmáni', 'Vaxandi máni', 'Hálfmáni', 'Vaxandi túnglfull',
+                    'Fullmáni', 'Minnkandi túnglfull', 'Minnkandi hálfmáni', 'Gamall máni'
+                ];
+                
+                this.notificationsEnabled = false;
+                this.lastTouchTime = 0;
+                
+                this.init();
+            }
+            
+            init() {
+                this.registerServiceWorker();
+                this.bindEvents();
+                this.addTouchEvents();
+                this.initNotifications();
+                this.render();
+                this.updateCurrentDate();
+                this.addAndroidOptimizations();
+            }
+            
+            registerServiceWorker() {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(registration => {
+                            console.log('SW registered: ', registration);
+                            this.swRegistration = registration;
+                        })
+                        .catch(registrationError => {
+                            console.log('SW registration failed: ', registrationError);
+                        });
+                }
+            }
+            
+            bindEvents() {
+                document.getElementById('prevMonth').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.vibrate(50);
+                    this.navigateMonth(-1);
+                });
+                
+                document.getElementById('nextMonth').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.vibrate(50);
+                    this.navigateMonth(1);
+                });
+                
+                document.getElementById('notificationToggle').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.vibrate(100);
+                    this.toggleNotifications();
+                });
+            }
+            
+            addTouchEvents() {
+                let touchStartX = 0;
+                let touchStartY = 0;
+                let touchStartTime = 0;
+                
+                document.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                    touchStartTime = Date.now();
+                }, { passive: true });
+                
+                document.addEventListener('touchend', (e) => {
+                    if (!touchStartX || !touchStartY) return;
+                    
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const touchEndY = e.changedTouches[0].clientY;
+                    const touchEndTime = Date.now();
+                    
+                    const deltaX = touchEndX - touchStartX;
+                    const deltaY = touchEndY - touchStartY;
+                    const deltaTime = touchEndTime - touchStartTime;
+                    
+                    // Swipe detection with improved sensitivity for Android
+                    if (Math.abs(deltaX) > Math.abs(deltaY) && 
+                        Math.abs(deltaX) > 50 && 
+                        deltaTime < 300) {
+                        
+                        this.vibrate(30);
+                        
+                        if (deltaX > 0) {
+                            this.navigateMonth(-1);
+                        } else {
+                            this.navigateMonth(1);
+                        }
+                    }
+                    
+                    touchStartX = 0;
+                    touchStartY = 0;
+                    touchStartTime = 0;
+                }, { passive: true });
+                
+                // Prevent double-tap zoom on Android
+                let lastTap = 0;
+                document.addEventListener('touchend', (e) => {
+                    const currentTime = new Date().getTime();
+                    const tapLength = currentTime - lastTap;
+                    if (tapLength < 500 && tapLength > 0) {
+                        e.preventDefault();
+                    }
+                    lastTap = currentTime;
+                });
+            }
+            
+            addAndroidOptimizations() {
+                // Prevent scroll bounce on Android
+                document.body.addEventListener('touchmove', (e) => {
+                    if (e.target === document.body) {
+                        e.preventDefault();
+                    }
+                }, { passive: false });
+                
+                // Optimize for Android Chrome
+                if (navigator.userAgent.toLowerCase().indexOf('android') > -1) {
+                    // Add Android-specific optimizations
+                    document.body.style.webkitUserSelect = 'none';
+                    document.body.style.webkitTouchCallout = 'none';
+                    
+                    // Force hardware acceleration on Android
+                    const elements = document.querySelectorAll('.control-btn, .day-cell, .notification-btn');
+                    elements.forEach(el => {
+                        el.style.willChange = 'transform';
+                        el.style.webkitBackfaceVisibility = 'hidden';
+                    });
+                }
+                
+                // Handle Android keyboard
+                window.addEventListener('resize', () => {
+                    if (window.innerHeight < 500) {
+                        document.body.classList.add('keyboard-open');
+                    } else {
+                        document.body.classList.remove('keyboard-open');
+                    }
+                });
+            }
+            
+            vibrate(duration = 50) {
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(duration);
+                }
+            }
+            
+            navigateMonth(direction) {
+                this.displayMonth += direction;
+                if (this.displayMonth < 0) {
+                    this.displayMonth = 11;
+                    this.displayYear--;
+                } else if (this.displayMonth > 11) {
+                    this.displayMonth = 0;
+                    this.displayYear++;
+                }
+                this.render();
+            }
+            
+            render() {
+                this.renderMonthYear();
+                this.renderCalendar();
+                this.renderMoonPhase();
+            }
+            
+            renderMonthYear() {
+                const monthYearElement = document.getElementById('monthYear');
+                const vikingYear = this.convertToVikingYear(this.displayYear);
+                monthYearElement.textContent = `${this.vikingMonths[this.displayMonth]} ${vikingYear}`;
+            }
+            
+            renderCalendar() {
+                const daysContainer = document.getElementById('daysContainer');
+                daysContainer.innerHTML = '';
+                
+                const firstDay = new Date(this.displayYear, this.displayMonth, 1);
+                const startDate = new Date(firstDay);
+                startDate.setDate(startDate.getDate() - firstDay.getDay());
+                
+                const today = new Date();
+                
+                for (let i = 0; i < 42; i++) {
+                    const date = new Date(startDate);
+                    date.setDate(startDate.getDate() + i);
+                    
+                    const dayCell = document.createElement('div');
+                    dayCell.className = 'day-cell';
+                    
+                    if (date.getMonth() !== this.displayMonth) {
+                        dayCell.classList.add('other-month');
+                    }
+                    
+                    if (date.toDateString() === today.toDateString()) {
+                        dayCell.classList.add('today');
+                    }
+                    
+                    const dayNumber = document.createElement('div');
+                    dayNumber.className = 'day-number';
+                    dayNumber.textContent = date.getDate();
+                    
+                    const vikingDay = document.createElement('div');
+                    vikingDay.className = 'viking-day';
+                    vikingDay.textContent = this.getVikingDayName(date);
+                    
+                    dayCell.appendChild(dayNumber);
+                    dayCell.appendChild(vikingDay);
+                    
+                    dayCell.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.vibrate(30);
+                        this.showDateInfo(date);
+                    });
+                    
+                    daysContainer.appendChild(dayCell);
+                }
+            }
+            
+            showDateInfo(date) {
+                const vikingDate = this.formatVikingDate(date);
+                const moonPhase = this.calculateMoonPhase(date);
+                const moonName = this.moonNames[moonPhase];
+                
+                // Use a more Android-friendly alert
+                if (window.confirm(`Víkinga dagsetning upplýsingar:
+
+${vikingDate}
+🌙 Máni: ${moonName}
+
+Fullr víkinga dagr: ${this.vikingDays[date.getDay()]}
+Nútíma dagsetning: ${date.toLocaleDateString()}
+
+Ýttu á "OK" til að halda áfram.`)) {
+                    this.vibrate(100);
+                }
+            }
+            
+            updateCurrentDate() {
+                const currentVikingDateElement = document.getElementById('currentVikingDate');
+                const now = new Date();
+                const vikingDate = this.formatVikingDate(now);
+                currentVikingDateElement.textContent = vikingDate;
+            }
+            
+            formatVikingDate(date) {
+                const vikingYear = this.convertToVikingYear(date.getFullYear());
+                const vikingMonth = this.vikingMonths[date.getMonth()];
+                const vikingDayName = this.getVikingDayName(date);
+                const dayNumber = date.getDate();
+                
+                return `${vikingDayName}, ${dayNumber}. ${vikingMonth} ${vikingYear}`;
+            }
+            
+            getVikingDayName(date) {
+                const dayNames = ['Sun', 'Mán', 'Týs', 'Óðin', 'Þór', 'Frjá', 'Laug'];
+                return dayNames[date.getDay()];
+            }
+            
+            convertToVikingYear(modernYear) {
+                const vikingStartYear = 793;
+                const vikingEndYear = 1066;
+                const vikingRange = vikingEndYear - vikingStartYear;
+                
+                const cyclePosition = (modernYear - 2000) % vikingRange;
+                const vikingYear = vikingStartYear + Math.abs(cyclePosition);
+                
+                return vikingYear;
+            }
+            
+            renderMoonPhase() {
+                const moonPhaseElement = document.getElementById('moonPhase');
+                const moonPhaseNameElement = document.getElementById('moonPhaseName');
+                
+                const now = new Date();
+                const moonPhase = this.calculateMoonPhase(now);
+                
+                moonPhaseElement.textContent = this.moonPhases[moonPhase];
+                moonPhaseNameElement.textContent = this.moonNames[moonPhase];
+            }
+            
+            calculateMoonPhase(date) {
+                const knownNewMoon = new Date(2000, 0, 6, 18, 14);
+                const secondsSinceKnownNewMoon = (date - knownNewMoon) / 1000;
+                const daysSinceKnownNewMoon = secondsSinceKnownNewMoon / 86400;
+                const moonCycles = daysSinceKnownNewMoon / 29.53058867;
+                const currentMoonCycle = moonCycles - Math.floor(moonCycles);
+                
+                return Math.floor(currentMoonCycle * 8);
+            }
+            
+            async initNotifications() {
+                if (!('Notification' in window)) {
+                    console.log('This browser does not support notifications');
+                    this.disableNotificationButton();
+                    return;
+                }
+                
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    this.notificationsEnabled = true;
+                    this.updateNotificationButton();
+                    this.scheduleDailyNotification();
+                } else {
+                    this.updateNotificationButton();
+                }
+            }
+            
+            async toggleNotifications() {
+                if (!('Notification' in window)) {
+                    alert('Þinn vafri styður eigi tilkynningar');
+                    return;
+                }
+                
+                if (this.notificationsEnabled) {
+                    this.notificationsEnabled = false;
+                    this.cancelNotifications();
+                    this.updateNotificationButton();
+                } else {
+                    const permission = await Notification.requestPermission();
+                    if (permission === 'granted') {
+                        this.notificationsEnabled = true;
+                        this.updateNotificationButton();
+                        this.scheduleDailyNotification();
+                        this.showWelcomeNotification();
+                    } else {
+                        alert('Tilkynningar váru hafnaðar. Þú getur virkjað þær í stillingum vafrans.');
+                    }
+                }
+            }
+            
+            updateNotificationButton() {
+                const button = document.getElementById('notificationToggle');
+                const icon = document.getElementById('notificationIcon');
+                const text = document.getElementById('notificationText');
+                
+                if (this.notificationsEnabled) {
+                    icon.textContent = '🔔';
+                    text.textContent = 'Tilkynningar virkar';
+                    button.classList.remove('disabled');
+                } else {
+                    icon.textContent = '🔕';
+                    text.textContent = 'Vekja tilkynningar';
+                    button.classList.add('disabled');
+                }
+            }
+            
+            disableNotificationButton() {
+                const button = document.getElementById('notificationToggle');
+                const icon = document.getElementById('notificationIcon');
+                const text = document.getElementById('notificationText');
+                
+                icon.textContent = '🚫';
+                text.textContent = 'Tilkynningar eigi studdar';
+                button.classList.add('disabled');
+                button.disabled = true;
+            }
+            
+            showWelcomeNotification() {
+                const now = new Date();
+                const vikingDate = this.formatVikingDate(now);
+                
+                new Notification('Dagatalr - Tilkynningar virkjaðar', {
+                    body: `Góðan dag! Í þessum degi er ${vikingDate}`,
+                    icon: '/icon-192.png',
+                    badge: '/icon-192.png',
+                    tag: 'welcome',
+                    requireInteraction: false
+                });
+            }
+            
+            scheduleDailyNotification() {
+                this.cancelNotifications();
+                
+                const now = new Date();
+                const nextNotification = new Date();
+                nextNotification.setHours(9, 0, 0, 0);
+                
+                if (now.getTime() > nextNotification.getTime()) {
+                    nextNotification.setDate(nextNotification.getDate() + 1);
+                }
+                
+                const timeUntilNotification = nextNotification.getTime() - now.getTime();
+                
+                this.notificationTimeout = setTimeout(() => {
+                    this.sendDailyNotification();
+                    this.dailyNotificationInterval = setInterval(() => {
+                        this.sendDailyNotification();
+                    }, 24 * 60 * 60 * 1000);
+                }, timeUntilNotification);
+            }
+            
+            sendDailyNotification() {
+                if (!this.notificationsEnabled) return;
+                
+                const now = new Date();
+                const vikingDate = this.formatVikingDate(now);
+                const vikingDayName = this.getVikingDayName(now);
+                const moonPhase = this.calculateMoonPhase(now);
+                const moonName = this.moonNames[moonPhase];
+                
+                new Notification('Dagatalr - Dagligt upprifjun', {
+                    body: `${vikingDayName}dagr - ${vikingDate}\n🌙 ${moonName}`,
+                    icon: '/icon-192.png',
+                    badge: '/icon-192.png',
+                    tag: 'daily-reminder',
+                    requireInteraction: false,
+                    vibrate: [200, 100, 200]
+                });
+            }
+            
+            cancelNotifications() {
+                if (this.notificationTimeout) {
+                    clearTimeout(this.notificationTimeout);
+                    this.notificationTimeout = null;
+                }
+                
+                if (this.dailyNotificationInterval) {
+                    clearInterval(this.dailyNotificationInterval);
+                    this.dailyNotificationInterval = null;
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new VikingCalendar();
+        });
+
+        // Android-specific page lifecycle
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // App is hidden, save state
+                console.log('App hidden');
+            } else {
+                // App is visible, restore state
+                console.log('App visible');
+            }
+        });
+    </script>
+</body>
+</html>
